@@ -107,7 +107,7 @@ export default function TaskEdit(props: TaskEditProps) {
             />
           </FormControl>
 
-          <DeleteTask task={task} />
+          <DeleteTask task={task} onDeleted={onClose} />
         </ModalBody>
         <ModalFooter bg={"gray.100"}>
           <Button

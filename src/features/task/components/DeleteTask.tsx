@@ -19,14 +19,15 @@ import useTask from "../hooks/useTask";
 
 type TaskEditProps = {
   task: TaskType;
+  onDeleted: () => void;
 };
 
-export default function TaskEdit(props: TaskEditProps) {
+export default function DeleteTask(props: TaskEditProps) {
   const [showModal, setShowModal] = useState<boolean>(false);
   const finalRef = useRef(null);
   const { deleteTask } = useTask();
   const [loading, setLoading] = useState<boolean>(false);
-  const { task } = props;
+  const { task, onDeleted } = props;
   const toast = useToast();
 
   const onDelete = async () => {
@@ -81,7 +82,13 @@ export default function TaskEdit(props: TaskEditProps) {
             >
               Delete Task
             </Button>
-            <Button onClick={() => setShowModal(false)} disabled={loading}>
+            <Button
+              onClick={() => {
+                setShowModal(false);
+                onDeleted();
+              }}
+              disabled={loading}
+            >
               Cancel
             </Button>
           </ModalFooter>

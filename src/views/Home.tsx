@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { TaskStatus } from "../libs/enums/TaskStatus.enum";
 import TaskCard from "../features/task/components/TaskCard";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import CreateTask from "../features/task/components/CreateTask";
 
 const Home = () => {
   const { loading, state, updateTask, getTasks } = useTask();
@@ -50,9 +51,13 @@ const Home = () => {
       }}
     >
       <Box p={4}>
-        <Heading as="h1" mb={4}>
-          TryHackMe Task
-        </Heading>
+        <Flex justifyContent="space-between" alignItems="center">
+          <Heading as="h1" size="lg">
+            TryHackMe | Task Management
+          </Heading>
+          <CreateTask tasks={state.tasks} />
+        </Flex>
+
         <Flex>
           <SimpleGrid columns={1} flex={1} gap={4}>
             <Heading as="h2" size="md" mb={2} textAlign={"center"}>

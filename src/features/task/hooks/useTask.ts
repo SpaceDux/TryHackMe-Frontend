@@ -2,21 +2,12 @@ import { useState } from "react";
 import { TaskSchema, TaskType } from "../domain/Task.schema";
 import { CreateTaskSchema, CreateTaskType } from "../domain/CreateTask.schema";
 import { useToast } from "@chakra-ui/react";
+import useTaskStore from "../useTaskStore";
 
 export default function useTask() {
-  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [state, actions] = useTaskStore();
   const [loading, setLoading] = useState(false);
   const toast = useToast();
-
-  /**
-   * @description Get tasks from state
-   * @returns {Task[]}
-   */
-  async function getTasksFromState(): Promise<TaskType[]> {
-    if (!tasks.length) await getTasks();
-
-    return tasks;
-  }
 
   /**
    * @description Get all tasks from the API
@@ -41,7 +32,7 @@ export default function useTask() {
 
       if (result.success === false) throw new Error(result.error?.message);
 
-      setTasks(result.data);
+      actions.setTasks(result.data);
 
       return data;
     } catch (error) {
@@ -205,6 +196,8 @@ export default function useTask() {
       });
       const data = await response.json();
 
+      await getTasks();
+
       return data.success;
     } catch (error) {
       console.error("[useTask] deleteTask error", error);
@@ -223,13 +216,12 @@ export default function useTask() {
   }
 
   return {
-    tasks,
     loading,
     getTasks,
     getTask,
     createTask,
     updateTask,
     deleteTask,
-    getTasksFromState,
+    state,
   };
 }

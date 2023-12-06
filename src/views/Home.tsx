@@ -1,32 +1,26 @@
 import { Box, Flex, Heading, SimpleGrid, useToast } from "@chakra-ui/react";
 import useTask from "../features/task/hooks/useTask";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { TaskStatus } from "../libs/enums/TaskStatus.enum";
 import TaskCard from "../features/task/components/TaskCard";
-import { TaskType } from "../features/task/domain/Task.schema";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const Home = () => {
-  const { loading, getTasksFromState, tasks, updateTask } = useTask();
-  const [result, setResult] = useState<TaskType[] | null>(tasks);
+  const { loading, state, updateTask, getTasks } = useTask();
   const toast = useToast();
 
   useEffect(() => {
-    Promise.all([getTasksFromState()]);
+    Promise.all([getTasks()]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // We need to update the result state when the tasks state changes
-  useEffect(() => {
-    setResult(tasks);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getTasksFromState]);
 
   const handleDragDrop = async (id: string, destination: TaskStatus) => {
     // This does not handle drags tasks in the same column.
     // It only handles drag and drop between columns.
 
-    const task = tasks.find((task) => task.id === id);
+    const task = state.tasks.find((task) => task.id === id);
+
+    if (task?.status === destination) return;
 
     await updateTask({ ...task, status: destination });
 
@@ -38,6 +32,8 @@ const Home = () => {
       isClosable: true,
       position: "bottom-right",
     });
+
+    return;
   };
 
   if (loading) {
@@ -76,7 +72,7 @@ const Home = () => {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  {result
+                  {state.tasks
                     ?.filter((task) => task.status === TaskStatus.PENDING)
                     .map((task, index) => (
                       <Draggable
@@ -90,7 +86,7 @@ const Home = () => {
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
-                            <TaskCard task={task} tasks={tasks} />
+                            <TaskCard task={task} tasks={state.tasks} />
                           </div>
                         )}
                       </Draggable>
@@ -118,7 +114,7 @@ const Home = () => {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  {result
+                  {state.tasks
                     ?.filter((task) => task.status === TaskStatus.ACTIVE)
                     .map((task, index) => (
                       <Draggable
@@ -132,7 +128,7 @@ const Home = () => {
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
-                            <TaskCard task={task} tasks={tasks} />
+                            <TaskCard task={task} tasks={state.tasks} />
                           </div>
                         )}
                       </Draggable>
@@ -160,7 +156,7 @@ const Home = () => {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
-                  {result
+                  {state.tasks
                     ?.filter((task) => task.status === TaskStatus.COMPLETED)
                     .map((task, index) => (
                       <Draggable
@@ -174,7 +170,7 @@ const Home = () => {
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
-                            <TaskCard task={task} tasks={tasks} />
+                            <TaskCard task={task} tasks={state.tasks} />
                           </div>
                         )}
                       </Draggable>

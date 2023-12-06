@@ -47,8 +47,6 @@ export default function CreateTask(props: TaskEditProps) {
       ? selectedRelatedTo.map((row) => row.value)
       : [];
 
-    console.log(task);
-
     await createTask(task);
 
     setIsOpen(false);

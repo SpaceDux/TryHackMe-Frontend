@@ -91,7 +91,6 @@ export default function TaskEdit(props: TaskEditProps) {
               name="relatedTo"
               value={selectedRelatedTo}
               onChange={(value) => {
-                console.log(value);
                 setSelectedRelatedTo(value);
               }}
               tagVariant="solid"

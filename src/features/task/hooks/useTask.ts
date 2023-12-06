@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { TaskSchema, TaskType } from "../domain/Task.schema";
 import { CreateTaskSchema, CreateTaskType } from "../domain/CreateTask.schema";
@@ -35,7 +36,7 @@ export default function useTask() {
       actions.setTasks(result.data);
 
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("[useTask] getTasks error", error);
       toast({
         title: "Error",
@@ -70,7 +71,7 @@ export default function useTask() {
       setLoading(false);
 
       return data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("[useTask] getTask error", error);
       toast({
         title: "Error",
@@ -116,7 +117,7 @@ export default function useTask() {
       await getTasks();
 
       return result.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("[useTask] createTask error", error);
       toast({
         title: "Error",
@@ -166,7 +167,7 @@ export default function useTask() {
       await getTasks();
 
       return result.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("[useTask] updateTask error", error);
       toast({
         title: "Error",
@@ -199,7 +200,7 @@ export default function useTask() {
       await getTasks();
 
       return data.success;
-    } catch (error) {
+    } catch (error: any) {
       console.error("[useTask] deleteTask error", error);
       toast({
         title: "Error",

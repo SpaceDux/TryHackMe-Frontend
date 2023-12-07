@@ -24,7 +24,7 @@ export default function useTask() {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/api/task/list?limit=${limit}&page=${page}`
+        `http://localhost:3000/api/task/list?limit=${limit}&page=${page}`
       );
       const data = await response.json();
 
@@ -60,7 +60,7 @@ export default function useTask() {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:3001/api/task/${id}`);
+      const response = await fetch(`http://localhost:3000/api/task/${id}`);
       const data = await response.json();
 
       // Validate using zod.
@@ -100,7 +100,7 @@ export default function useTask() {
       const args = await CreateTaskSchema.safeParseAsync(task);
       if (args.success === false) throw new Error(args.error?.message);
 
-      const response = await fetch(`http://localhost:3001/api/task/create`, {
+      const response = await fetch(`http://localhost:3000/api/task/create`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -147,7 +147,7 @@ export default function useTask() {
       if (args.success === false) throw new Error(args.error?.message);
 
       const response = await fetch(
-        `http://localhost:3001/api/task/update/${task.id}`,
+        `http://localhost:3000/api/task/update/${task.id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -192,7 +192,7 @@ export default function useTask() {
     setLoading(true);
 
     try {
-      const response = await fetch(`http://localhost:3001/api/task/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/task/${id}`, {
         method: "DELETE",
       });
       const data = await response.json();
